@@ -10,6 +10,8 @@ class VersionResolverTest extends RepositoryBasedTest {
     
     def setup() {
         resolver = new VersionResolver(repository, context.versionFactory())
+
+        resolver = builder(project).mockResolver(resolver).buildAndGet(VersionResolver)
     }
     
     def "should return default previous and current version when no tag in repository"() {

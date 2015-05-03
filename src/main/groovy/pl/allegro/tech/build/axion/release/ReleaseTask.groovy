@@ -11,7 +11,7 @@ class ReleaseTask extends DefaultTask {
     void release() {
         Context context = new Context(project)
         Releaser releaser = context.releaser()
-        
+
         releaser.release(context.config())
         releaser.pushRelease(context.config())
     }

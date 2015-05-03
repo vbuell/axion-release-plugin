@@ -6,25 +6,26 @@ import org.gradle.api.logging.Logger
 import pl.allegro.tech.build.axion.release.domain.hooks.ReleaseHooksRunner
 import pl.allegro.tech.build.axion.release.domain.scm.ScmService
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
 class Releaser {
 
-    private final ScmService repository
+    @Inject
+    private ScmService repository
 
-    private final ReleaseHooksRunner hooksRunner
+    @Inject
+    private ReleaseHooksRunner hooksRunner
 
-    private final LocalOnlyResolver localOnlyResolver
+    @Inject
+    private LocalOnlyResolver localOnlyResolver
 
-    private final Logger logger
+    @Inject
+    private Logger logger
 
+    @Inject
     private Project project
-
-    Releaser(ScmService repository, ReleaseHooksRunner hooksRunner, LocalOnlyResolver localOnlyResolver, Project project) {
-        this.repository = repository
-        this.hooksRunner = hooksRunner
-        this.localOnlyResolver = localOnlyResolver
-        this.project = project
-        this.logger = project.logger
-    }
 
     void release(VersionConfig versionConfig) {
         VersionWithPosition positionedVersion = versionConfig.getRawVersion()

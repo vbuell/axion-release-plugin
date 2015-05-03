@@ -5,9 +5,14 @@ import org.gradle.api.tasks.TaskAction
 import pl.allegro.tech.build.axion.release.domain.NextVersionMarker
 import pl.allegro.tech.build.axion.release.infrastructure.di.Context
 
+import javax.inject.Inject
+
 class MarkNextVersionTask extends DefaultTask {
 
     private static final String NEXT_VERSION_PROPERTY = "release.nextVersion"
+
+    @Inject
+    private NextVersionMarker marker;
 
     @TaskAction
     void release() {
@@ -17,13 +22,7 @@ class MarkNextVersionTask extends DefaultTask {
         }
 
         Context context = new Context(project)
-
-        NextVersionMarker marker = new NextVersionMarker(
-                context.scmService(),
-                context.localOnlyResolver(),
-                logger
-        )
-        marker.markNextVersion(context.config(), project.property(NEXT_VERSION_PROPERTY))
+        marker.markNextVersion(project.property(NEXT_VERSION_PROPERTY))
     }
 
 }

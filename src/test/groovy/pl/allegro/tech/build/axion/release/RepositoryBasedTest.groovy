@@ -28,5 +28,9 @@ class RepositoryBasedTest extends Specification {
         repository = context.repository()
         repository.commit(['*'], 'initial commit')
     }
+
+    def cleanup() {
+        Context.destroy()
+    }
     
 }

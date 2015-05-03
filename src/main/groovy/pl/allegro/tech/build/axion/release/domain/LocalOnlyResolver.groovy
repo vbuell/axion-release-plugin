@@ -2,17 +2,26 @@ package pl.allegro.tech.build.axion.release.domain
 
 import org.gradle.api.Project
 
+import javax.annotation.PostConstruct
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
 class LocalOnlyResolver {
 
     private static final String LOCAL_ONLY = "release.localOnly"
 
-    private final Project project
+    @Inject
+    private Project project
 
-    private final boolean localOnly
+    @Inject
+    private VersionConfig config
 
-    LocalOnlyResolver(VersionConfig config, Project project) {
+    private boolean localOnly
+
+    @PostConstruct
+    private void postConstruct() {
         this.localOnly = config.localOnly
-        this.project = project
     }
 
     boolean localOnly(boolean remoteAttached) {

@@ -1,19 +1,15 @@
 package pl.allegro.tech.build.axion.release.domain
 
 import pl.allegro.tech.build.axion.release.RepositoryBasedTest
-import pl.allegro.tech.build.axion.release.domain.hooks.ReleaseHooksRunner
-import pl.allegro.tech.build.axion.release.domain.scm.ScmService
+import pl.allegro.tech.build.axion.release.infrastructure.di.Context
 
 class ReleaserTest extends RepositoryBasedTest {
 
     Releaser releaser
     
     def setup() {
-        ScmService scmService = context.scmService()
-        
-        releaser = new Releaser(scmService, new ReleaseHooksRunner(project.logger, scmService, config.hooks),
-                context.localOnlyResolver(),
-                project)
+        Context.initContext(project)
+        releaser = Context.getService(Releaser)
     }
 
     def "should release new version when not on tag"() {

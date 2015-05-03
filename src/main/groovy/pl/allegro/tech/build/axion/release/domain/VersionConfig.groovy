@@ -35,8 +35,6 @@ class VersionConfig {
 
     HooksConfig hooks = new HooksConfig()
     
-    VersionService versionService
-
     private String resolvedVersion = null
 
     private VersionWithPosition rawVersion = null
@@ -86,24 +84,10 @@ class VersionConfig {
     }
 
     String getVersion() {
-        if (resolvedVersion == null) {
-            ensureVersionServiceExists()
-            resolvedVersion = versionService.currentDecoratedVersion(this, VersionReadOptions.fromProject(project))
-        }
-        return resolvedVersion
+        return Context.getService(VersionService).currentDecoratedVersion(this, VersionReadOptions.fromProject(project))
     }
 
     VersionWithPosition getRawVersion() {
-        if (rawVersion == null) {
-            ensureVersionServiceExists()
-            rawVersion = versionService.currentVersion(this, VersionReadOptions.fromProject(project))
-        }
-        return rawVersion
-    }
-
-    private void ensureVersionServiceExists() {
-        if (versionService == null) {
-            this.versionService = new Context(project).versionService()
-        }
+        return Context.getService(VersionService).currentVersion(this, VersionReadOptions.fromProject(project))
     }
 }

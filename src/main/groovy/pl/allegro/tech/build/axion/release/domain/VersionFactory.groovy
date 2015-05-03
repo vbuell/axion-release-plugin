@@ -3,6 +3,9 @@ package pl.allegro.tech.build.axion.release.domain
 import com.github.zafarkhaja.semver.Version
 import pl.allegro.tech.build.axion.release.domain.scm.ScmPosition
 
+import javax.inject.Singleton
+
+@Singleton
 class VersionFactory {
 
     Version create(ScmPositionContext context, VersionConfig config, VersionReadOptions options) {

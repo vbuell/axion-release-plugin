@@ -1,7 +1,8 @@
 package pl.allegro.tech.build.axion.release.domain
 
-import java.util.regex.Pattern
+import javax.inject.Singleton
 
+@Singleton
 class VersionSanitizer {
 
     private static final String PATTERN = /[^A-Za-z0-9-._]/

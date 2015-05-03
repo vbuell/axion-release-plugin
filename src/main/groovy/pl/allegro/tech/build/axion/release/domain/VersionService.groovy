@@ -1,20 +1,21 @@
 package pl.allegro.tech.build.axion.release.domain
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
 class VersionService {
 
     static final String SNAPSHOT = "SNAPSHOT"
 
-    private final VersionDecorator versionDecorator
+    @Inject
+    private VersionDecorator versionDecorator
 
-    private final VersionResolver versionResolver
+    @Inject
+    private VersionResolver versionResolver
 
-    private final VersionSanitizer sanitizer
-
-    VersionService(VersionResolver versionResolver) {
-        this.versionResolver = versionResolver
-        this.versionDecorator = new VersionDecorator()
-        this.sanitizer = new VersionSanitizer()
-    }
+    @Inject
+    private VersionSanitizer sanitizer
 
     VersionWithPosition currentVersion(VersionConfig versionConfig, VersionReadOptions options) {
         VersionWithPosition positionedVersion = versionResolver.resolveVersion(versionConfig, options)

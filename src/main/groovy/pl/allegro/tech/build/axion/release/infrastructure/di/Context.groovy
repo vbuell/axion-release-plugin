@@ -1,5 +1,6 @@
 package pl.allegro.tech.build.axion.release.infrastructure.di
 
+import org.glassfish.hk2.utilities.ServiceLocatorUtilities
 import org.gradle.api.Project
 import org.gradle.internal.service.ServiceRegistry
 import org.gradle.logging.StyledTextOutputFactory
@@ -19,7 +20,26 @@ import pl.allegro.tech.build.axion.release.infrastructure.DryRepository
 import pl.allegro.tech.build.axion.release.infrastructure.git.GitChangesPrinter
 import pl.allegro.tech.build.axion.release.infrastructure.git.GitRepository
 
+import javax.inject.Singleton
+
+@Singleton
 class Context {
+
+    private static serviceLocator;
+
+    public static void initContext(Project project) {
+        serviceLocator = ServiceLocatorUtilities.bind("releaseTask", new ReleasePluginBinder(project));
+    }
+
+    public static <T> T getService(Class<T> serviceClass) {
+        return serviceLocator.getService(serviceClass)
+    }
+
+    public static void destroy() {
+        serviceLocator.shutdown()
+    }
+
+    //////////////////////////
 
     private final Map instances = [:]
 
@@ -31,9 +51,10 @@ class Context {
     }
 
     private void initialize(Project project) {
-        instances[VersionFactory] = new VersionFactory()
-        instances[ScmRepository] = new ScmRepositoryFactory().create(project, config().repository)
-        instances[VersionService] = new VersionService(new VersionResolver(get(ScmRepository), get(VersionFactory)))
+        initContext(project)
+//        instances[VersionFactory] = new VersionFactory()
+//        instances[ScmRepository] = new ScmRepositoryFactory().create(project, config().repository)
+//        instances[VersionService] = new VersionService(new VersionResolver(get(ScmRepository), get(VersionFactory)))
     }
 
     private <T> T get(Class<T> clazz) {
@@ -45,7 +66,8 @@ class Context {
     }
 
     ScmRepository repository() {
-        return config().dryRun ? new DryRepository(get(ScmRepository), project.logger) : get(ScmRepository)
+        return serviceLocator.getService(ScmRepository)
+//        return config().dryRun ? new DryRepository(get(ScmRepository), project.logger) : get(ScmRepository)
     }
 
     ScmService scmService() {

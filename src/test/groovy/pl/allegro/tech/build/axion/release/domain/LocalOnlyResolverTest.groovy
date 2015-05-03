@@ -4,7 +4,7 @@ import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Specification
 
-class LocalOnlyResolverTest extends Specification {
+class LocalOnlyResolverTest extends Hk2BasedTest {
 
     private final Project project = ProjectBuilder.builder().build()
 

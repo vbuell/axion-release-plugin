@@ -4,16 +4,17 @@ import com.github.zafarkhaja.semver.Version
 import pl.allegro.tech.build.axion.release.domain.scm.ScmPosition
 import pl.allegro.tech.build.axion.release.domain.scm.ScmRepository
 
-class VersionResolver {
-    
-    private final ScmRepository repository
+import javax.inject.Inject
+import javax.inject.Singleton
 
-    private final VersionFactory versionFactory
-    
-    VersionResolver(ScmRepository repository, VersionFactory versionFactory) {
-        this.repository = repository
-        this.versionFactory = versionFactory
-    }
+@Singleton
+class VersionResolver {
+
+    @Inject
+    private ScmRepository repository
+
+    @Inject
+    private VersionFactory versionFactory
     
     VersionWithPosition resolveVersion(VersionConfig versionConfig, VersionReadOptions readOptions) {
         Map positions = readPositions(versionConfig)

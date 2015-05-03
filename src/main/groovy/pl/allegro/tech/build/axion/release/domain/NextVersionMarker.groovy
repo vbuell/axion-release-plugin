@@ -3,21 +3,25 @@ package pl.allegro.tech.build.axion.release.domain
 import org.gradle.api.logging.Logger
 import pl.allegro.tech.build.axion.release.domain.scm.ScmService
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
 class NextVersionMarker {
 
-    private final ScmService repository
+    @Inject
+    private ScmService repository
 
-    private final LocalOnlyResolver localOnlyResolver
+    @Inject
+    private LocalOnlyResolver localOnlyResolver
 
-    private final Logger logger
+    @Inject
+    private Logger logger
 
-    NextVersionMarker(ScmService repository, LocalOnlyResolver localOnlyResolver, Logger logger) {
-        this.repository = repository
-        this.localOnlyResolver = localOnlyResolver
-        this.logger = logger
-    }
+    @Inject
+    private VersionConfig versionConfig
 
-    void markNextVersion(VersionConfig versionConfig, String nextVersion) {
+    void markNextVersion(String nextVersion) {
         String tagName = versionConfig.tag.serialize(versionConfig.tag, nextVersion)
         String nextVersionTag = versionConfig.nextVersion.serializer(versionConfig.nextVersion, tagName)
 

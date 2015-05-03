@@ -1,7 +1,9 @@
 package pl.allegro.tech.build.axion.release.domain
 
+import javax.inject.Singleton
 import java.util.regex.Pattern
 
+@Singleton
 class VersionDecorator {
 
     String createVersion(VersionConfig config, VersionWithPosition rawVersion) {
